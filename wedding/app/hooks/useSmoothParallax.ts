@@ -41,7 +41,7 @@ export default function useSmoothParallax(
 
     const rootEl: HTMLElement | Document = rootRef.current || document;
     let items = Array.from(
-      (rootEl as any).querySelectorAll<HTMLElement>("[data-speed]")
+      (rootEl as Document | HTMLElement).querySelectorAll("[data-speed]") as NodeListOf<HTMLElement>
     );
     let lastY = -1;
     const scale = prefersReduced ? 0 : isMobile ? 0.4 : 1;
@@ -66,7 +66,9 @@ export default function useSmoothParallax(
     window.addEventListener("scroll", onScroll, { passive: true } as any);
     // Refresh item list shortly after mount to capture any late-mounted nodes
     const refreshTimer = setTimeout(() => {
-      items = Array.from((rootEl as any).querySelectorAll<HTMLElement>("[data-speed]"));
+      items = Array.from(
+        (rootEl as Document | HTMLElement).querySelectorAll("[data-speed]") as NodeListOf<HTMLElement>
+      );
       tick();
     }, 50);
     tick();
