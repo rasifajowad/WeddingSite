@@ -1,0 +1,123 @@
+/* ===== Tailwind v4 layers ===== */
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+
+/* ===== Design tokens used by the site ===== */
+:root{
+  /* Fluid type */
+  --t-xxl: clamp(28px, 7vw, 56px);
+  --t-xl: clamp(22px, 5.5vw, 40px);
+  --t-lg: clamp(18px, 4.6vw, 28px);
+  --t-md: clamp(16px, 4vw, 20px);
+  --t-sm: clamp(14px, 3.6vw, 16px);
+
+  /* Fluid spacing */
+  --s-xxl: clamp(32px, 8vw, 64px);
+  --s-xl: clamp(24px, 6vw, 48px);
+  --s-lg: clamp(18px, 4.8vw, 32px);
+  --s-md: clamp(12px, 3.6vw, 24px);
+  --s-sm: clamp(8px, 2.8vw, 16px);
+
+  /* Cards */
+  /* Default anchor offset for fixed elements */
+  --anchor-offset: 72px;
+  --r-card: 12px;
+  --shadow-card: 0 8px 24px rgba(0,0,0,.06);
+
+  /* Theme demo vars (optional) */
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* Base */
+html{scroll-behavior:smooth;}
+body { overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Desktop / mobile toggles */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+/* Desktop nav never on mobile even if classes are missing */
+@media (max-width: 900px){
+  .desktop-only { display: none !important; }
+  .mobile-only  { display: block !important; }
+
+  #nav .nav-top,
+  #nav .nav-city-rail,
+  #nav #nav-link-w { display: none !important; }
+
+  /* Single mobile bar (grid: T/A left, date right) */
+  #mbar{
+    position: fixed; top: 0; left: 0; right: 0; height: 56px;
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+    padding: 0 14px; background: #fdfdfb; border-bottom: 1px solid #c3c2c0;
+    z-index: 50; pointer-events: auto;
+  }
+  #mbar .mbar-left{ font-weight: 700; font-size: var(--t-sm); color: #284135; }
+  #mbar .mbar-right{ justify-self: end; font-weight: 600; font-size: var(--t-sm); color: #284135; }
+
+  /* Floating RSVP pill */
+  #rsvp-pill{
+    position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 50; pointer-events: auto; text-decoration: none;
+    padding: 12px 18px; border-radius: 999px; border: 1px solid #284135; color: #284135; background: #fdfdfb;
+    box-shadow: var(--shadow-card); font-weight: 700; font-size: var(--t-sm);
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  #rsvp-pill:active{ transform: scale(.98); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+
+  /* Hero (mobile) */
+  #hero{ height: 70vh; margin-top: 56px; }
+  #h-hero-img{
+    width: 100vw !important; max-width: none !important; left: 0; right: 0; bottom: 6vh;
+    object-position: 60% center;
+  }
+  #hero h1{
+    left: 6vw !important; top: 28vh !important;
+    font-size: 11.5vw !important; line-height: 11.8vw !important; letter-spacing: -0.7vw !important;
+    text-wrap: balance;
+  }
+
+  /* Venue (mobile cards) */
+  .ms-entitled{ text-transform: uppercase; font-weight: 700; font-size: var(--t-sm); letter-spacing: .08em; color: #284135; }
+  .ms-card{
+    background: #fdfdfb; border: 1px solid #c3c2c0; border-radius: var(--r-card);
+    padding: var(--s-lg); margin-bottom: var(--s-lg); box-shadow: var(--shadow-card);
+  }
+  .ms-h3{ font-family: serif; font-size: var(--t-lg); margin: var(--s-sm) 0; color: #284135; }
+  .ms-note{ color: #999790; font-size: var(--t-sm); line-height: 1.5; }
+  .ms-actions{ display: flex; gap: 10px; margin-top: var(--s-sm); }
+  .ms-actions a{
+    flex: 1; text-align: center; padding: 12px 10px; border-radius: 10px;
+    border: 1px solid #284135; color: #284135; font-weight: 700; text-decoration: none;
+  }
+
+  /* Footer fix (mobile) */
+  footer{
+    height: auto !important;
+    padding: 12vw 6vw calc(24vw + env(safe-area-inset-bottom)) !important;
+    background: #fdfdfb;
+  }
+}
+
+
+/* Anchor target helpers */
+#rsvp, #venue, #intro { scroll-margin-top: var(--anchor-offset); }
