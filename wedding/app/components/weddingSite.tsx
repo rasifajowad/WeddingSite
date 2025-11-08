@@ -101,7 +101,7 @@ export default function WeddingSite() {
       {/* Floating/fixed marks, outside nav */}
       <div id="marks" className="fixed inset-0 pointer-events-none z-30">
         <div id="mark-logo" className="text-center overflow-hidden" style={{ position: "absolute", top: "2.78vw", left: "2.78vw" }}>
-          <div className="nav-logo-text">T&A</div>
+          <div className="nav-logo-text">T/A</div>
         </div>
         <div id="mark-date" className="text-center overflow-hidden" style={{ position: "absolute", top: "2.78vw", right: "2.61vw" }}>
           <div className="nav-logo-text">09/Jan</div>
