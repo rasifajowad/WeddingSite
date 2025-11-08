@@ -101,7 +101,7 @@ export default function WeddingSite() {
       {/* Floating/fixed marks, outside nav */}
       <div id="marks" className="fixed inset-0 pointer-events-none z-30">
         <div id="mark-logo" className="text-center overflow-hidden" style={{ position: "absolute", top: "2.78vw", left: "2.78vw" }}>
-          <img src="./favicon.ico" style={{maxWidth: "50px"}} />
+          <img id="logo-img" src="./favicon.ico" style={{ maxWidth: "32px", width: "32px", height: "auto" }} />
           {/* <div className="nav-logo-text">T/A</div> */}
         </div>
         <div id="mark-date" className="text-center overflow-hidden" style={{ position: "absolute", top: "2.78vw", right: "2.61vw" }}>
@@ -531,6 +531,8 @@ export default function WeddingSite() {
         }
         .cta-rsvp:hover { filter: brightness(0.96); }
         .nav-logo-text { font-size: 0.9vw; line-height: 1.4vw; font-weight: 700; }
+        /* Ensure logo image is consistently sized on all viewports */
+        #logo-img { max-width: 32px; width: 32px; height: auto; display: inline-block; }
         /* Soft-left fade for all inline images to avoid hard edges */
         img {
           -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0, #000 10%, #000 100%);
