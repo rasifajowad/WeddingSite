@@ -19,7 +19,9 @@ const brand = {
 
 export default function WeddingSite() {
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const isMobile = useIsMobile(768);
+  const isTabletOrBelow = useIsMobile(1024);
+  const isParallaxMobile = useIsMobile(768);
+  const isPhoneOrBelow = useIsMobile(640);
   const prefersReduced =
     typeof window !== "undefined" &&
     window.matchMedia &&
@@ -30,7 +32,10 @@ export default function WeddingSite() {
     document.body.style.background = brand.bg;
   }, []);
 
-  useSmoothParallax(rootRef as any, { isMobile, prefersReduced });
+  useSmoothParallax(rootRef as any, {
+    isMobile: isParallaxMobile,
+    prefersReduced,
+  });
 
   useEffect(() => {
     const el = document.documentElement;
@@ -171,15 +176,78 @@ export default function WeddingSite() {
 
         {/* little rotating mark (bottom-left region) */}
         <div className="absolute bottom-[3.9vw] left-[20.8vw]">
-          <RotatingDodeca size={isMobile ? 48 : 78} />
+          <RotatingDodeca
+            size={isPhoneOrBelow ? 40 : isTabletOrBelow ? 58 : 78}
+            speedSec={isPhoneOrBelow ? 2 : isTabletOrBelow ? 2.4 : 3}
+          />
         </div>
       </header>
+
+      {/* ============== FAMILY INTRO ============== */}
+      <section
+        id="family-intro"
+        className="relative overflow-hidden"
+        style={{ background: brand.bg }}
+      >
+        <div className="family-bg" aria-hidden>
+          <img
+            id="family-scenic"
+            data-speed="0.06"
+            className="pointer-events-none select-none opacity-20"
+            src="/wedding/scenic-1.png"
+            alt=""
+            style={{
+              right: 0,
+              bottom: "20vh",
+              width: "83.33vw",
+              maxWidth: "130vh"
+            }}
+          />
+        </div>
+        <div
+          id="family-bg-ar"
+          aria-hidden
+          data-speed="-0.05"
+        >
+          بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيْمِ
+        </div>
+        <div id="family-card">
+          <div className="family-label">Bismillahir Rahmanir Rahim</div>
+          <div className="family-divider" />
+          <p className="family-we">We</p>
+          <p className="family-parents">
+            Md. Safiul Ahad Sardar &amp; Begum Shamsunnahar Ahmed
+          </p>
+          <p className="body-text">
+            Cordially invite you to the wedding reception of our eldest son
+          </p>
+          <h3 className="family-name heading-serif heading-md">
+            Rasif Ajowad
+          </h3>
+          <div className="family-ampersand">&amp;</div>
+          <h3 className="family-name heading-serif heading-md">
+            Jigar Fatima Tanisha
+          </h3>
+          <p className="body-text">eldest daughter of</p>
+          <p className="family-parents">
+            Md. Hasemuddin Ahmed &amp; Taslima Fatema
+          </p>
+          <div className="family-cta">
+            <a href="#rsvp" className="cta-rsvp" onClick={openRSVP}>
+              RSVP
+            </a>
+            <p className="family-note">
+              Kindly respond by December 15, 2025
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ============== SECTION 1 (DATE / INVITE / BIG NUMBERS) ============== */}
       <section
         id="intro"
         className="relative"
-        style={{ height: "43vw", background: brand.bg }}
+        style={{ height: "35vw", background: brand.bg }}
       >
         
         {/* THE DATE */}
@@ -230,7 +298,7 @@ export default function WeddingSite() {
         </div>
 
         {/* THE INVITE */}
-        <div id="invite" className="absolute" style={{ top: "32.1vw", left: "58.5vw", width: "16.6vw" }}>
+        {/* <div id="invite" className="absolute" style={{ top: "32.1vw", left: "58.5vw", width: "16.6vw" }}>
           <Entitled>THE INVITE</Entitled>
           <div
             className="mt-[1vw] w-[1.66vw] h-[0.22vw]"
@@ -242,7 +310,7 @@ export default function WeddingSite() {
           <div className="mt-[1vw] py-4">
             <a href="#rsvp" className="cta-rsvp" onClick={openRSVP}>RSVP</a>
           </div>
-        </div>
+        </div> */}
 
         {/* Decorative BIG NUMBERS (parallax in opposite directions) */}
         {/* <ul
@@ -354,6 +422,31 @@ export default function WeddingSite() {
         </div> */}
       </section>
 
+      {/* ============== RECEPTION TITLE (SUB-1440) ============== */}
+      <section
+        id="mobile-reception-title"
+        className="relative"
+        style={{ background: brand.bg }}
+      >
+        <div
+          className="mx-auto flex flex-col items-center"
+          style={{
+            maxWidth: "min(800px, 92vw)",
+            padding: "6vw 5vw 4vw",
+          }}
+        >
+          <h2
+            data-speed="0.04"
+            className="heading-serif heading-xl text-center"
+            style={{ color: brand.green }}
+          >
+            <div className="text-slate-600/40">Reception of</div>
+            <div>Tanisha &amp; Ajowad</div>
+            <div className="text-slate-600/40">in Dhaka</div>
+          </h2>
+        </div>
+      </section>
+
       {/* ============== SECTION 2 (KIB / VENUE / IMAGES) ============== */}
       <section
         id="venue"
@@ -368,15 +461,6 @@ export default function WeddingSite() {
           style={{ top: "15.44vw", left: "5vw", width: "80.05vw", opacity: "0.2" }}
           src="/wedding/scenic-0.png"
           alt="Scenic Placeholder 0"
-        />
-        {/* right scenic (moves slower) */}
-        <img
-          id="h-s2-img-1"
-          data-speed="0.06"
-          className="absolute object-cover"
-          style={{ top: "50.5vw", right: "54vw", width: "40vw", opacity: "0.2" }}
-          src="/wedding/scenic-1.png"
-          alt="Scenic Placeholder 1"
         />
 
         {/* Reception Title (gentle parallax) */}
@@ -440,19 +524,12 @@ export default function WeddingSite() {
             className="mt-[1vw] w-[1.66vw] h-[0.22vw]"
             style={{ background: brand.line }}
           />
-          <p className="mt-[2.33vw] body-text">
-            Anything Formal yet Comfortable
-          </p>
           <h3 className="mt-[1.2vw] heading-serif heading-md">
-            <div>Suits/Jackets</div>
-            <div>Shirts/Polos</div>
-            <div>Sarees</div>
+            <div>Anything Formal yet Comfortable</div>
           </h3>
-          <div className="mt-[1vw]">
-            <UnderlineLink href="">
-              Just Suggestions
-            </UnderlineLink>
-          </div>
+          {/* <p className="mt-[2.33vw] body-text">
+            Suits, Jackets, Shirts, Trousers, Sarees, Salwar
+          </p> */}
         </div>
       </section>
 
@@ -495,7 +572,7 @@ export default function WeddingSite() {
           </li>
         </ul>
 
-        <div className="absolute bottom-[3.5vw] left-[41.66vw] cursor-pointer">
+        <div className="scroll-up-wrap absolute bottom-[3.5vw] left-[41.66vw] cursor-pointer mt-14 lg:mt-[4vw]">
           <Entitled>SCROLL UP</Entitled>
         </div>
       </footer>
@@ -543,7 +620,7 @@ export default function WeddingSite() {
         .heading-serif { font-family: var(--brand-serif, serif); letter-spacing: -0.02em; }
         .heading-md { font-size: clamp(22px, 6vw, 48px); line-height: 1.15; }
         .heading-xl { font-weight: 700; font-size: clamp(36px, 8.5vw, 120px); line-height: 1.04; letter-spacing: -0.02em; }
-        .arabic-bg { font-family: var(--brand-arabic, serif); }
+        .arabic-bg { font-family: var(--brand-arabic, serif); position: relative; z-index: 1; }
         #hero-title-wrap .hero-date { margin-top: 0.9rem; }
         /* Hero date styling */
         .hero-date { display: inline-flex; align-items: center; gap: 0.6rem; color: ${brand.green}; }
@@ -555,6 +632,103 @@ export default function WeddingSite() {
         .body-text { color: ${brand.gray}; font-size: clamp(15px, 4vw, 20px); line-height: 1.6; }
         .body-text.small { font-size: clamp(14px, 3.6vw, 18px); line-height: 1.5; }
 
+        #family-intro {
+          padding: clamp(60px, 7vw, 120px) clamp(80px, 10vw, 180px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        }
+        #family-card {
+          position: relative;
+          z-index: 1;
+          max-width: 36vw;
+          min-width: 26vw;
+          color: ${brand.green};
+          display: flex;
+          flex-direction: column;
+          gap: clamp(10px, 1.2vw, 18px);
+          align-items: center;
+          text-align: center;
+          margin: 0 auto;
+        }
+        #family-card .family-label {
+          text-transform: uppercase;
+          letter-spacing: 0.3em;
+          font-size: clamp(12px, 0.9vw, 14px);
+          font-weight: 600;
+        }
+        #family-card .family-divider {
+          width: 2.2vw;
+          max-width: 40px;
+          height: 2px;
+          background: ${brand.line};
+          margin: 0 auto;
+        }
+        #family-card .family-we {
+          font-size: clamp(14px, 1.1vw, 18px);
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: ${brand.gray};
+        }
+        #family-card .family-parents {
+          font-family: var(--brand-serif, serif);
+          font-size: clamp(18px, 1.4vw, 26px);
+          line-height: 1.4;
+          color: ${brand.green};
+        }
+        #family-card .family-name {
+          font-size: clamp(28px, 2.6vw, 52px);
+          font-weight: 700;
+          letter-spacing: -0.05em;
+          color: ${brand.green};
+        }
+        .family-cta {
+          margin-top: clamp(20px, 2vw, 32px);
+          display: flex;
+          flex-direction: column;
+          gap: clamp(10px, 1.2vw, 16px);
+        }
+        .family-note {
+          font-style: italic;
+          color: ${brand.gray};
+          font-size: clamp(14px, 1.2vw, 18px);
+        }
+        .family-ampersand {
+          font-size: clamp(18px, 1.6vw, 26px);
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: ${brand.gray};
+        }
+        #family-bg-ar {
+          position: absolute;
+          top: clamp(10px, 4vw, 120px);
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: clamp(28px, 7vw, 64px);
+          color: ${brand.green};
+          opacity: 0.1;
+          font-family: var(--brand-arabic, serif);
+          white-space: nowrap;
+          pointer-events: none;
+          z-index: 0;
+          text-align: center;
+        }
+        #family-intro .family-bg {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          z-index: 0;
+        }
+        #family-scenic {
+          position: absolute;
+          right: 0;
+          bottom: 20vh;
+          width: 83.33vw;
+          max-width: 130vh;
+          opacity: 0.1;
+        }
+
         /* Invite: introduce comfortable inner spacing and consistent gaps */
         #invite { padding-top: clamp(8px, 1vw, 16px); padding-bottom: clamp(8px, 1vw, 16px); }
         #invite > * + * { margin-top: clamp(8px, 1.2vw, 18px); }
@@ -563,17 +737,23 @@ export default function WeddingSite() {
         #intro-date { padding-top: clamp(8px, 1vw, 16px); padding-bottom: clamp(8px, 1vw, 16px); }
         #intro-date > * + * { margin-top: clamp(8px, 1.2vw, 18px); }
 
-        /* Desktop: enforce floating absolute blocks in intro */
-        @media (min-width: 769px) {
+        /* Desktop breakpoints */
+        @media (min-width: 1440px) {
           #intro > #intro-date,
           #intro > #verse,
           #intro > #invite { position: absolute !important; z-index: 1; }
           #intro-bg-ar { font-size: clamp(22px, 3vw, 54px); line-height: 1.2; max-width: 88vw; }
         }
 
-        /* Mobile layout: reflow absolute content and adjust sizes */
-        /* Hide RSVP floating button by default (desktop/tablet) */
+        /* Hide floating RSVP button by default; enable it per breakpoint */
         #rsvp-fab { display: none; }
+        #mobile-reception-title { display: none; }
+        #mobile-reception-title h2 {
+          text-align: left;
+        }
+        #mobile-reception-title h2 {
+          padding: 0 0 5vw 0;
+        }
 
         /* Footer grid to prevent overlap on desktop */
         .footer-grid { position: absolute; top: 8.33vw; left: 0; right: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; padding: 0 10vw; align-items: start; }
@@ -583,16 +763,310 @@ export default function WeddingSite() {
         /* Spacing between itinerary items */
         footer li#itinerary .itinerary-content > * + * { margin-top: clamp(6px, 0.8vw, 12px); }
 
-        @media (max-width: 768px) {
-          /* Footer grid stacks on mobile */
+        @media (max-width: 1439px) {
+          #mobile-reception-title { display: block; }
+          #mobile-reception-title h2 {
+            margin: 0 auto;
+          }
+          #venue h2 { display: none !important; }
+          #family-intro {
+            padding: clamp(48px, 9vw, 110px) clamp(24px, 7vw, 80px) !important;
+            justify-content: center !important;
+          }
+          #family-card {
+            max-width: min(640px, 100%) !important;
+            min-width: 0 !important;
+          }
+          #family-card .family-divider {
+            width: clamp(40px, 10vw, 90px) !important;
+          }
+          #family-bg-ar {
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            top: clamp(12px, 5vw, 80px) !important;
+            font-size: clamp(28px, 10vw, 64px) !important;
+            text-align: center !important;
+            width: 100% !important;
+          }
+          html, body { overflow-x: hidden !important; }
+          #intro,
+          #venue,
+          footer {
+            height: auto !important;
+            padding: clamp(48px, 7vw, 96px) clamp(32px, 6vw, 96px) !important;
+          }
+          #intro {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            grid-auto-rows: minmax(0, auto);
+            gap: clamp(28px, 4vw, 48px);
+            align-items: start;
+            grid-template-areas:
+              "date"
+              "arabic"
+              "verse"
+              "invite";
+          }
+          #intro > div {
+            position: static !important;
+            width: auto !important;
+            margin: 0 !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+            min-width: 0 !important;
+            max-width: 100% !important;
+          }
+          #intro-bg-ar {
+            grid-area: arabic;
+            font-size: clamp(22px, 4vw, 38px) !important;
+            line-height: 1.2 !important;
+            opacity: 0.08 !important;
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
+            margin-bottom: clamp(12px, 2vw, 20px) !important;
+            width: 100% !important;
+            word-break: break-word !important;
+            white-space: normal !important;
+          }
+          #intro > div:not(#intro-bg-ar) { position: relative !important; z-index: 1 !important; }
+          #intro-date,
+          #verse,
+          #invite {
+            place-self: center;
+            text-align: center;
+            max-width: min(540px, 100%);
+            width: 100%;
+          }
+          #intro-date { grid-area: date; }
+          #verse { grid-area: verse; }
+          #invite { grid-area: invite; }
+
+          #venue {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-auto-rows: minmax(0, auto);
+            gap: clamp(28px, 4vw, 72px);
+          }
+          #venue > div {
+            position: static !important;
+            width: auto !important;
+            margin: 0 !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+          }
+          #venue h2 {
+            grid-column: 1 / -1;
+            font-size: clamp(32px, 8vw, 72px) !important;
+            line-height: 1.05 !important;
+            letter-spacing: -0.02em !important;
+            margin: 0 0 clamp(20px, 4vw, 48px) !important;
+          }
+
+          .footer-grid {
+            position: static !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: clamp(24px, 4vw, 60px) !important;
+            padding: 0 !important;
+            margin: clamp(32px, 6vw, 72px) auto 0 auto !important;
+          }
+          .footer-grid {
+            margin-bottom: clamp(48px, 8vw, 120px) !important;
+          }
+          footer li#itinerary .itinerary-content { max-width: none !important; }
+        }
+
+        @media (min-width: 1024px) and (max-width: 1439px) {
+          #hero { height: 85vh !important; }
+          #hero-title-wrap {
+            top: 30vh !important;
+            left: 18vw !important;
+            right: 18vw !important;
+          }
+          #hero .scroll-hint { display: none !important; }
+          #marks { top: 3vw !important; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          #nav-rail, #nav-rsvp { display: none !important; }
+          #marks {
+            position: static !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            padding: 4vw 6vw !important;
+            gap: 1.5vw !important;
+          }
+          #marks .nav-logo-text {
+            font-size: clamp(14px, 1.8vw, 18px) !important;
+          }
+          #hero {
+            height: 70vh !important;
+            min-height: 60vh !important;
+          }
+          #hero-title-wrap {
+            top: 24vh !important;
+            left: 10vw !important;
+            right: 10vw !important;
+          }
+          #hero-title-wrap .hero-title {
+            font-size: clamp(42px, 9vw, 82px) !important;
+          }
+          #hero .scroll-hint { display: none !important; }
+          #intro-bg-ar {
+            opacity: 0.06 !important;
+            font-size: clamp(24px, 5vw, 38px) !important;
+          }
+          #intro,
+          #venue {
+            grid-template-columns: 1fr !important;
+            gap: clamp(32px, 5vw, 56px) !important;
+          }
+          #intro > div,
+          #venue > div,
+          #venue h2 {
+            max-width: 640px !important;
+            width: 100% !important;
+            justify-self: center !important;
+          }
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: clamp(32px, 5vw, 56px) !important;
+          }
+          #rsvp-fab {
+            position: fixed !important;
+            right: 4vw !important;
+            bottom: 4vw !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 1rem 1.6rem !important;
+            border: 1px solid ${brand.green} !important;
+            background: ${brand.green} !important;
+            color: ${brand.paper} !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.04em !important;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+            pointer-events: auto !important;
+            z-index: 40 !important;
+          }
+        }
+
+        @media (min-width: 640px) and (max-width: 767px) {
+          #nav-rail, #nav-rsvp { display: none !important; }
+          #marks {
+            position: static !important;
+            inset: auto !important;
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            padding: 5vw 6vw !important;
+          }
+          #marks .nav-logo-text {
+            color: ${brand.green} !important;
+            font-family: var(--brand-serif, serif) !important;
+            font-weight: 700 !important;
+            letter-spacing: -0.01em !important;
+            font-size: clamp(16px, 4vw, 20px) !important;
+            line-height: 1.2 !important;
+          }
+          #hero {
+            height: 64vh !important;
+            overflow: hidden !important;
+          }
+          #h-hero-img {
+            left: 0 !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            opacity: 0.18 !important;
+          }
+          #hero-title-wrap { top: 20vh !important; left: 6vw !important; right: 6vw !important; }
+          #intro,
+          #venue {
+            grid-template-columns: 1fr !important;
+            gap: clamp(28px, 7vw, 44px) !important;
+          }
+          #intro > div,
+          #venue > div,
+          #venue h2 {
+            width: 100% !important;
+            max-width: 540px !important;
+            justify-self: center !important;
+          }
+          .footer-grid { grid-template-columns: 1fr !important; gap: clamp(24px, 6vw, 40px) !important; margin-bottom: clamp(40px, 8vw, 100px) !important; }
+          #intro-bg-ar {
+            font-size: clamp(20px, 6vw, 30px) !important;
+            opacity: 0.07 !important;
+          }
+          #rsvp-fab {
+            position: fixed !important;
+            right: 5vw !important;
+            bottom: 5vw !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 1rem 1.6rem !important;
+            border: 1px solid ${brand.green} !important;
+            background: ${brand.green} !important;
+            color: ${brand.paper} !important;
+            font-weight: 600 !important;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.12) !important;
+            z-index: 40 !important;
+          }
+        }
+
+        @media (max-width: 1023px) {
+          #intro-bg-ar {
+            z-index: 0 !important;
+          }
+          #verse {
+            position: relative !important;
+            z-index: 1 !important;
+          }
+        }
+
+        @media (max-width: 639px) {
+          #intro,
+          #venue {
+            grid-template-columns: 1fr !important;
+            gap: clamp(32px, 8vw, 52px) !important;
+          }
+          #intro > div,
+          #venue > div,
+          #venue h2 {
+            width: 100% !important;
+            justify-self: center !important;
+          }
+          #family-intro {
+            padding: 14vw 6vw !important;
+          }
+          #family-card {
+            width: 100% !important;
+            align-items: center !important;
+            text-align: center !important;
+          }
+          #family-card .family-divider {
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          #family-bg-ar {
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            font-size: clamp(24px, 12vw, 42px) !important;
+            text-align: center !important;
+          }
           .footer-grid { position: static !important; display: grid !important; grid-template-columns: 1fr !important; gap: 10vw !important; padding: 0 6vw !important; }
-          /* Prevent horizontal scroll and scale media safely */
           html, body { overflow-x: hidden !important; }
           img, video { max-width: 100% !important; height: auto !important; }
-          /* Hide rotated rails on mobile */
           #nav-rail, #nav-rsvp { display: none !important; }
 
-          /* Marks stack centered above hero (in flow, not fixed) */
           #marks {
             position: static !important;
             inset: auto !important;
@@ -615,15 +1089,12 @@ export default function WeddingSite() {
             line-height: 1.2 !important;
           }
 
-          /* Hero */
           #hero {
-            /* Denser hero: max 60% of screen */
             height: 60dvh !important;
             min-height: 56dvh !important;
             overflow: hidden !important;
           }
           #h-hero-img {
-            /* Oversized landscape image that fully covers hero */
             left: 0 !important;
             top: 0 !important;
             right: 0 !important;
@@ -634,27 +1105,16 @@ export default function WeddingSite() {
             max-width: none !important;
             opacity: 0.15 !important;
           }
-          /* Title wrapper positioning on mobile */
           #hero-title-wrap { top: 5vh !important; left: 6vw !important; right: 6vw !important; }
           #hero-title-wrap .hero-title { font-size: clamp(34px, 14.5vw, 96px) !important; line-height: 1.02 !important; letter-spacing: -0.02em !important; }
           #hero-title-wrap .hero-date { margin-top: 3.5vw !important; }
           #hero-date .hero-date-chip { font-size: clamp(12px, 3.6vw, 16px) !important; padding: 0.4rem 0.6rem !important; }
           #hero-date .hero-date-year { font-size: clamp(12px, 3.4vw, 16px) !important; }
-          /* Hide scroll hint on small screens to save vertical space */
           #hero .scroll-hint { display: none !important; }
 
-          /* Make other sections denser; aim under ~60% visual height */
-          #intro, #venue, footer {
-            height: auto !important;
-            padding: 8vw 5vw !important;
-          }
-          #intro > div,
-          #venue > div {
-            margin: 5vw 0 !important;
-          }
-
-          /* Sections become auto-height with padding; absolute blocks go static */
-          #intro, #venue, footer {
+          #intro,
+          #venue,
+          footer {
             height: auto !important;
             padding: 14vw 6vw !important;
           }
@@ -666,72 +1126,55 @@ export default function WeddingSite() {
             max-width: 100% !important;
           }
 
-          /* Stronger vertical rhythm for Invite and Date */
           #invite { padding-top: clamp(12px, 4vw, 24px) !important; padding-bottom: clamp(12px, 4vw, 24px) !important; }
           #invite > * + * { margin-top: clamp(12px, 4vw, 24px) !important; }
           #intro-date { padding-top: clamp(12px, 4vw, 24px) !important; padding-bottom: clamp(12px, 4vw, 24px) !important; }
           #intro-date > * + * { margin-top: clamp(12px, 4vw, 24px) !important; }
 
-          /* Keep Arabic background absolutely positioned and scaled behind */
+          #intro {
+            grid-template-areas:
+              "date"
+              "arabic"
+              "verse"
+              "invite";
+          }
           #intro-bg-ar {
-            position: absolute !important;
-            top: 4vw !important;
-            left: 6vw !important;
+            position: relative !important;
+            top: 0 !important;
+            left: 0 !important;
             font-size: clamp(18px, 6.2vw, 32px) !important;
             line-height: 1.25 !important;
-            opacity: 0.08 !important;
+            opacity: 0.05 !important;
             pointer-events: none !important;
             z-index: 0 !important;
-            width: calc(100% - 12vw) !important;
+            width: 100% !important;
             max-width: 92vw !important;
+            grid-area: arabic !important;
           }
+          #intro-date { grid-area: date !important; }
+          #verse { grid-area: verse !important; }
+          #invite { grid-area: invite !important; }
           #intro > div:not(#intro-bg-ar) { position: relative !important; z-index: 1 !important; }
 
-          /* Mobile alignment: keep within viewport */
           #invite { left: 2vw !important; padding-right: 0 !important; width: 100% !important; max-width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
           #parking { padding-left: clamp(10px, 6vw, 36px) !important; max-width: 100% !important; }
           #verse { left: 3vw !important; padding-right: 0 !important; width: 100% !important; max-width: 100% !important; margin-left: auto !important; margin-right: auto !important; text-align: center !important; top: 5vw !important; }
           #verse .body-text { overflow-wrap: anywhere; word-break: break-word; }
-
-          /* Typography scaling */
           #intro h2, #venue h3 { letter-spacing: -0.02em !important; }
 
-          /* Venue title becomes inline flow */
-          #venue h2 {
-            position: static !important;
-            font-size: clamp(28px, 10vw, 88px) !important;
-            line-height: 1.05 !important;
-            letter-spacing: -0.02em !important;
-            margin: 8vw 0 6vw !important;
-          }
-
-          /* Scenic images soften & expand */
-          #h-s2-img-0,
-          #h-s2-img-1 {
-            width: 120vw !important;
-            opacity: 0.15 !important;
-            left: -10vw !important;
-            right: auto !important;
-          }
-          #h-s2-img-0 { top: 10vh !important; }
-          #h-s2-img-1 { top: 35vh !important; }
-
-          /* Footer */
           footer {
             padding-top: 16vw !important;
           }
-          footer li#rsvp {
+          footer li#rsvp,
+          footer li#itinerary {
             position: static !important;
             text-align: center !important;
           }
-          footer li#itinerary { position: static !important; text-align: center !important; margin-bottom: 6vw !important; }
           footer li#itinerary .itinerary-content { max-width: none !important; margin-left: auto !important; margin-right: auto !important; text-align: center !important; }
           footer li#itinerary .itinerary-content > * + * { margin-top: clamp(8px, 3vw, 18px) !important; }
-          /* Center the rule after the Entitled label in footer */
-          footer li#rsvp .entitled + div { margin-left: auto !important; margin-right: auto !important; }
+          footer li#rsvp .entitled + div,
           footer li#itinerary .entitled + div { margin-left: auto !important; margin-right: auto !important; }
 
-          /* Floating RSVP button */
           #rsvp-fab {
             position: fixed !important;
             right: 5vw !important;
@@ -750,7 +1193,6 @@ export default function WeddingSite() {
             z-index: 40 !important;
           }
 
-          /* Force hero subtitle below title in flow on mobile */
           #hero-date {
             position: relative !important;
             z-index: 10 !important;
@@ -758,6 +1200,17 @@ export default function WeddingSite() {
             left: auto !important;
             margin-left: 6vw !important;
             margin-top: calc(5vh + 34vw) !important;
+          }
+
+          footer .scroll-up-wrap {
+            margin-top: var(--footer-scroll-gap, clamp(24px, 4vw, 52px)) !important;
+          }
+        }
+
+        @media (max-width: 1023px) {
+          #h-s2-img-0,
+          #h-s2-img-1 {
+            display: none !important;
           }
         }
 
