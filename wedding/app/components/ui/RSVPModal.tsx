@@ -83,7 +83,7 @@ export default function RSVPModal({ open, onClose, brand }: Props) {
           <form onSubmit={onSubmit} className="rsvp-form">
             {error ? <div className="rsvp-error" role="alert">{error}</div> : null}
             <label className="rsvp-label">
-              <span>Your Name</span>
+              <span>Your Full Name</span>
               <input
                 ref={firstFieldRef}
                 type="text"
@@ -94,7 +94,7 @@ export default function RSVPModal({ open, onClose, brand }: Props) {
             </label>
 
             <label className="rsvp-label">
-              <span>Additional Guests</span>
+              <span>Total Guests (inluding yourself)</span>
               <input
                 type="number"
                 min={0}

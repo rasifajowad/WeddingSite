@@ -212,7 +212,7 @@ export default function WeddingSite() {
           بِسْمِ اللهِ الرَّحْمَٰنِ الرَّحِيْمِ
         </div>
         <div id="family-card">
-          <div className="family-label">Bismillahir Rahmanir Rahim</div>
+          <div className="family-label">Bismillah'hir Rahman'ir Rahim</div>
           <div className="family-divider" />
           <p className="family-we">We</p>
           <p className="family-parents">
@@ -491,7 +491,7 @@ export default function WeddingSite() {
           </a>
           <div className="mt-[1vw]">
             <UnderlineLink href="">
-              KIB Complex
+              Find in Maps
             </UnderlineLink>
           </div>
         </div>
