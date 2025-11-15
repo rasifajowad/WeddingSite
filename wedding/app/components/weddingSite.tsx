@@ -230,14 +230,14 @@ export default function WeddingSite() {
           </h3>
           <p className="body-text">eldest daughter of</p>
           <p className="family-parents">
-            Md. Hasemuddin Ahmed &amp; Taslima Fatema
+            Hashem Uddin Ahmed &amp; Taslima Fatema
           </p>
           <div className="family-cta">
             <a href="#rsvp" className="cta-rsvp" onClick={openRSVP}>
               RSVP
             </a>
             <p className="family-note">
-              Kindly respond by December 15, 2025
+              Kindly respond by December 20, 2025
             </p>
           </div>
         </div>
@@ -1210,7 +1210,20 @@ export default function WeddingSite() {
         @media (max-width: 1023px) {
           #h-s2-img-0,
           #h-s2-img-1 {
-            display: none !important;
+            display: block !important;
+            position: absolute !important;
+            opacity: 0.1 !important;
+            pointer-events: none !important;
+          }
+          #h-s2-img-0 {
+            top: 8vh !important;
+            left: -20vw !important;
+            width: 140vw !important;
+          }
+          #h-s2-img-1 {
+            top: 42vh !important;
+            right: -10vw !important;
+            width: 120vw !important;
           }
         }
 
